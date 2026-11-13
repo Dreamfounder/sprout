@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F3EFE5">
+  <title>生芽 · 把哼唱长成一首歌</title>
+  <meta name="description" content="生芽是一款给普通人用的音乐创作工具。哼四小节，自动配和弦、贝斯和鼓点，一键导出 WAV。">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="expert.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.53.85l10.2-6.5a1 1 0 0 0 0-1.7L9.53 4.65A1 1 0 0 0 8 5.5Z" fill="currentColor"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="4" height="14" rx="1.6" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.4" fill="currentColor"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M17.5 4.5 21 8l-3.5 3.5M21 8H8a4.5 4.5 0 0 0-4.5 4.5v1M6.5 19.5 3 16l3.5-3.5M3 16h13a4.5 4.5 0 0 0 4.5-4.5v-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2.8" width="6" height="11.2" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.3 11.2a6.7 6.7 0 0 0 13.4 0M12 18v3.2M8.4 21.2h7.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="8.3" cy="8.3" r="1.25" fill="currentColor"/><circle cx="15.7" cy="8.3" r="1.25" fill="currentColor"/><circle cx="12" cy="12" r="1.25" fill="currentColor"/><circle cx="8.3" cy="15.7" r="1.25" fill="currentColor"/><circle cx="15.7" cy="15.7" r="1.25" fill="currentColor"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4.2-4.2M12 15l-4.2-4.2M4.5 18.5v1a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.7 2.2c-.9.55-1.3 1.1-1.3 2.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17.1" r="1.1" fill="currentColor"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5v5h3.4l4.1 3.5V6L7.4 9.5H4Z" fill="currentColor"/><path d="M15 9a4.2 4.2 0 0 1 0 6M17.7 6.4a7.8 7.8 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5v5h3.4l4.1 3.5V6L7.4 9.5H4Z" fill="currentColor"/><path d="m15.2 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.8c.5 4.2 1.9 5.6 6.1 6.1-4.2.5-5.6 1.9-6.1 6.1-.5-4.2-1.9-5.6-6.1-6.1 4.2-.5 5.6-1.9 6.1-6.1Z" fill="currentColor"/><path d="M18.4 14.3c.25 2.1.95 2.8 3.05 3.05-2.1.25-2.8.95-3.05 3.05-.25-2.1-.95-2.8-3.05-3.05 2.1-.25 2.8-.95 3.05-3.05Z" fill="currentColor" opacity=".7"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16.8 3.8 20.5 7.5l-3.7 3.7M20.5 7.5H17c-2.6 0-4.1 1.5-5.4 3.3L9.8 13c-1.3 1.8-2.8 3.3-5.4 3.3M16.8 13.3l3.7 3.7-3.7 3.7M20.5 17H17c-1.4 0-2.5-.5-3.5-1.3M3.5 7.5H6c1.4 0 2.5.5 3.5 1.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.8 12.5 4.6 4.6L19.5 6.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 18V5.7l10-2.2v10.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="6.6" cy="18" rx="3.3" ry="2.5" fill="currentColor"/><ellipse cx="16.6" cy="16.5" rx="3.3" ry="2.5" fill="currentColor"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="3" y="13" width="4" height="7" rx="2" fill="currentColor"/><rect x="17" y="13" width="4" height="7" rx="2" fill="currentColor"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="7" r="2" fill="#fff" stroke="currentColor" stroke-width="1.6"/><circle cx="15" cy="12" r="2" fill="#fff" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="17" r="2" fill="#fff" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5M4.5 12H14a5 5 0 0 1 5 5v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 7 5 5-5 5M19.5 12H10a5 5 0 0 0-5 5v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m0 0 6-6m-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-metro" viewBox="0 0 24 24"><path d="m9 20 3-16h2l3 16M6 20h12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m12 8 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 4h4l1 3H9l1-3ZM7 7l1 13h8l1-13M10 11v5M14 11v5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand" aria-label="生芽音乐工作室">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40">
+            <path class="mark-stem" d="M20 35V15" />
+            <path class="mark-leaf" d="M20 21c-8.5-.2-12.4-4.1-12.8-11.4C14.6 9.8 19.2 13.3 20 21Z" />
+            <path class="mark-leaf mark-leaf-2" d="M20 17.5c.6-7.2 4.4-10.6 11.2-10.9-.2 7.1-4.2 10.7-11.2 10.9Z" />
+            <circle class="mark-dot" cx="29.4" cy="29.2" r="2.5" />
+            <path class="mark-wave" d="M8 27.5c2.8-2.7 5-2.7 7.8 0s5 2.7 7.8 0" />
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>生芽</strong>
+          <small>SHENGYA STUDIO</small>
+        </span>
+      </div>
+
+      <div class="project">
+        <span class="project-dot" aria-hidden="true"></span>
+        <input id="titleInput" class="title-input" value="午后三点" maxlength="18" aria-label="歌曲名称" spellcheck="false">
+        <span class="save-state" id="saveState">已保存到本机</span>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-quiet" id="helpBtn" type="button">
+          <svg class="icon"><use href="#i-help"></use></svg>
+          <span>怎么玩</span>
+        </button>
+        <button class="btn btn-expert" id="expertBtn" type="button" title="专家模式">
+          <svg class="icon"><use href="#i-sliders"></use></svg>
+          <span>专家模式</span>
+        </button>
+        <button class="btn btn-export" id="exportBtn" type="button">
+          <svg class="icon"><use href="#i-export"></use></svg>
+          <span>导出 WAV</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar">
+        <section class="seed-card">
+          <div class="eyebrow"><span>01</span> 灵感种子</div>
+          <h2>哼一句，<br>长成一首歌。</h2>
+          <p>不用懂乐理。对着麦克风哼 4 小节，跑调也没关系，剩下的交给生芽。</p>
+          <button class="hum-cta" id="humBtn" type="button">
+            <span class="hum-cta-icon">
+              <svg class="icon"><use href="#i-mic"></use></svg>
+            </span>
+            <span class="hum-cta-copy">
+              <strong>哼一段旋律</strong>
+              <small>约 10 秒 · 只用音高，不保存录音</small>
+            </span>
+            <kbd>R</kbd>
+          </button>
+          <div class="seed-actions">
+            <button class="mini-btn" id="diceBtn" type="button">
+              <svg class="icon"><use href="#i-dice"></use></svg>
+              摇一摇灵感
+            </button>
+            <button class="mini-btn" id="listenBtn" type="button">
+              <svg class="icon"><use href="#i-headphones"></use></svg>
+              先听一段
+            </button>
+          </div>
+        </section>
+
+        <section class="side-section styles-section">
+          <div class="eyebrow"><span>02</span> 今天的声音</div>
+          <div class="style-list" id="styleList" role="listbox" aria-label="选择音乐风格"></div>
+        </section>
+
+        <section class="side-section tweak-section">
+          <div class="eyebrow"><span>03</span> 调一调</div>
+          <div class="control-row">
+            <label for="bpmRange">速度</label>
+            <output id="bpmOut">92 BPM</output>
+          </div>
+          <input class="range" id="bpmRange" type="range" min="62" max="136" step="1" value="92" aria-label="速度">
+          <div class="range-hint"><span>慢慢来</span><span>跑起来</span></div>
+
+          <div class="control-row control-row-space">
+            <label for="spaceRange">空间感</label>
+            <output id="spaceOut">20%</output>
+          </div>
+          <input class="range range-space" id="spaceRange" type="range" min="0" max="60" step="1" value="20" aria-label="混响空间感">
+
+          <label class="switch-row" for="fillsToggle">
+            <span>
+              <strong>自动加花</strong>
+              <small>第 4、8 小节来点小变化</small>
+            </span>
+            <input type="checkbox" id="fillsToggle" checked>
+            <span class="switch" aria-hidden="true"></span>
+          </label>
+        </section>
+
+        <p class="sidebar-foot">
+          <svg class="icon"><use href="#i-spark"></use></svg>
+          所有声音由浏览器实时合成，你的哼唱不会离开这台设备。
+        </p>
+      </aside>
+
+      <main class="stage">
+        <section class="hero" id="hero">
+          <div class="hero-copy">
+            <div class="mood-line">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span id="moodText">正在生长 · 清晨咖啡</span>
+            </div>
+            <h1 id="heroTitle">午后三点</h1>
+            <p class="hero-desc" id="heroDesc">像窗边第一缕光，落在还没写完的日记上。</p>
+            <div class="meta-line">
+              <span id="keyBadge">F 大调</span>
+              <span id="bpmBadge">92 BPM</span>
+              <span>8 小节循环</span>
+            </div>
+            <div class="hero-actions">
+              <button class="play-cta" id="heroPlay" type="button">
+                <span class="play-cta-round"><svg class="icon"><use href="#i-play"></use></svg></span>
+                <span id="heroPlayText">试听这一版</span>
+              </button>
+              <button class="icon-btn" id="shuffleBtn" type="button" title="换一段旋律" aria-label="换一段旋律">
+                <svg class="icon"><use href="#i-shuffle"></use></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-art" aria-hidden="true">
+            <div class="sun-halo"></div>
+            <div class="leaf leaf-a"></div>
+            <div class="leaf leaf-b"></div>
+            <div class="vinyl-shell">
+              <div class="vinyl" id="vinyl">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-label">
+                  <span>SHENGYA RECORDS</span>
+                  <strong id="labelTitle">午后三点</strong>
+                  <small>33⅓ · 8 BARS</small>
+                </div>
+                <i class="vinyl-hole"></i>
+              </div>
+            </div>
+            <span class="float-note note-a">♪</span>
+            <span class="float-note note-b">♫</span>
+            <span class="float-note note-c">·</span>
+            <div class="hero-sticker">
+              <span class="sticker-line"></span>
+              <span id="stickerText">MADE BY HUMMING</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="arrangement">
+          <div class="arrangement-head">
+            <div>
+              <div class="eyebrow eyebrow-dark"><span>编曲纸</span> ARRANGEMENT</div>
+              <h3>一圈一圈，长成歌</h3>
+            </div>
+            <div class="arrangement-hint">
+              <span class="hint-dot"></span>
+              点击轨道左侧的小喇叭可以静音
+            </div>
+          </div>
+
+          <div class="timeline" id="timeline">
+            <div class="ruler-row">
+              <div class="ruler-label">小节</div>
+              <div class="ruler" id="ruler"></div>
+            </div>
+            <div class="tracks" id="tracks"></div>
+            <div class="playhead-wrap" aria-hidden="true">
+              <div class="playhead-line" id="playheadLine">
+                <span class="playhead-cap"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chord-bar">
+            <div class="chord-label">
+              <strong>和弦走向</strong>
+              <small>四个和弦转一圈 · 点一下试听</small>
+            </div>
+            <div class="chord-cards" id="chordCards"></div>
+            <button class="chord-shuffle" id="chordShuffleBtn" type="button">
+              <svg class="icon"><use href="#i-shuffle"></use></svg>
+              换一组
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="transport">
+      <div class="transport-left">
+        <button class="transport-play" id="playBtn" type="button" aria-label="播放">
+          <svg class="icon"><use href="#i-play"></use></svg>
+        </button>
+        <button class="transport-icon" id="stopBtn" type="button" aria-label="停止">
+          <svg class="icon"><use href="#i-stop"></use></svg>
+        </button>
+        <button class="transport-icon is-on" id="loopBtn" type="button" aria-label="循环播放" aria-pressed="true">
+          <svg class="icon"><use href="#i-loop"></use></svg>
+        </button>
+        <div class="time-readout">
+          <strong id="timeNow">00:00</strong>
+          <span>/ <span id="timeTotal">00:21</span></span>
+        </div>
+      </div>
+
+      <div class="transport-mid">
+        <div class="mini-wave" id="miniWave" aria-hidden="true"></div>
+        <div class="transport-status" id="statusText">按空格，听听看</div>
+      </div>
+
+      <div class="transport-right">
+        <div class="volume-control">
+          <svg class="icon"><use href="#i-volume"></use></svg>
+          <input class="range range-volume" id="volumeRange" type="range" min="0" max="100" step="1" value="80" aria-label="总音量">
+        </div>
+        <button class="record-pill" id="humBtn2" type="button">
+          <span class="record-dot"></span>
+          哼唱
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <section class="expert" id="expertMode" aria-label="生芽专家模式" hidden>
+    <header class="expert-top">
+      <div class="expert-brand">
+        <span class="expert-logo" aria-hidden="true">
+          <svg viewBox="0 0 40 40">
+            <path class="mark-stem" d="M20 35V15" />
+            <path class="mark-leaf" d="M20 21c-8.5-.2-12.4-4.1-12.8-11.4C14.6 9.8 19.2 13.3 20 21Z" />
+            <path class="mark-leaf mark-leaf-2" d="M20 17.5c.6-7.2 4.4-10.6 11.2-10.9-.2 7.1-4.2 10.7-11.2 10.9Z" />
+            <circle class="mark-dot" cx="29.4" cy="29.2" r="2.5" />
+            <path class="mark-wave" d="M8 27.5c2.8-2.7 5-2.7 7.8 0s5 2.7 7.8 0" />
+          </svg>
+        </span>
+        <div class="expert-brand-copy">
+          <strong>生芽</strong>
+          <span>EXPERT MODE</span>
+        </div>
+      </div>
+
+      <div class="expert-project">
+        <span class="expert-live-dot" aria-hidden="true"></span>
+        <input id="expertTitle" type="text" maxlength="18" aria-label="歌曲名称" spellcheck="false">
+        <span id="expertSave">已保存</span>
+      </div>
+
+      <div class="expert-actions">
+        <button class="ex-icon-btn" id="expertUndo" type="button" title="撤销" aria-label="撤销">
+          <svg class="icon"><use href="#i-undo"></use></svg>
+        </button>
+        <button class="ex-icon-btn" id="expertRedo" type="button" title="重做" aria-label="重做">
+          <svg class="icon"><use href="#i-redo"></use></svg>
+        </button>
+        <button class="ex-btn ex-btn-export" id="expertExport" type="button" title="导出 WAV">
+          <svg class="icon"><use href="#i-export"></use></svg>
+          导出 WAV
+        </button>
+        <button class="ex-btn ex-btn-ghost" id="expertExit" type="button" title="回到简单模式" aria-label="回到简单模式">
+          <svg class="icon"><use href="#i-back"></use></svg>
+          回到简单模式
+        </button>
+      </div>
+    </header>
+
+    <div class="expert-toolbar">
+      <div class="ex-transport">
+        <button class="ex-play" id="expertPlay" type="button" aria-label="播放">
+          <svg class="icon"><use href="#i-play"></use></svg>
+        </button>
+        <button class="ex-icon-btn" id="expertStop" type="button" aria-label="停止">
+          <svg class="icon"><use href="#i-stop"></use></svg>
+        </button>
+        <button class="ex-icon-btn is-on" id="expertLoop" type="button" aria-label="循环" aria-pressed="true">
+          <svg class="icon"><use href="#i-loop"></use></svg>
+        </button>
+      </div>
+
+      <div class="ex-time">
+        <strong id="expertTime">01 · 01 · 01</strong>
+        <span>BAR · BEAT · STEP</span>
+      </div>
+
+      <span class="ex-divider"></span>
+
+      <label class="ex-field">
+        <span>BPM</span>
+        <input id="expertBpm" type="number" min="62" max="136" step="1" value="92">
+      </label>
+
+      <div class="ex-field">
+        <span>调性</span>
+        <strong id="expertKey">F 大调</strong>
+      </div>
+
+      <label class="ex-field">
+        <span>量化</span>
+        <select id="expertQuantize">
+          <option value="2">1/8</option>
+          <option value="1">1/16</option>
+        </select>
+      </label>
+
+      <button class="ex-toggle" id="expertMetro" type="button" aria-pressed="false">
+        <svg class="icon"><use href="#i-metro"></use></svg>
+        节拍器
+      </button>
+
+      <div class="ex-toolbar-right">
+        <span class="ex-zoom-label">缩放</span>
+        <input id="expertZoom" type="range" min="8" max="18" step="1" value="11" aria-label="钢琴卷帘缩放">
+        <button class="ex-icon-btn" id="expertReset" type="button" aria-label="回到开头" title="回到开头">
+          <svg class="icon"><use href="#i-stop"></use></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="expert-body">
+      <aside class="expert-rail">
+        <div class="ex-rail-head">
+          <span>轨道</span>
+          <span class="ex-count">5 TRACKS</span>
+        </div>
+        <div id="expertTrackList"></div>
+        <div class="ex-rail-foot">
+          <span><b>M</b> 静音</span>
+          <span><b>S</b> 独奏</span>
+        </div>
+      </aside>
+
+      <main class="expert-main">
+        <section class="ex-arranger">
+          <div class="ex-panel-head">
+            <div>
+              <span class="ex-kicker">ARRANGEMENT</span>
+              <h3>编曲区</h3>
+            </div>
+            <span class="ex-hint">点击片段选中轨道 · 点击小节定位</span>
+          </div>
+          <div class="ex-arranger-scroll" id="expertArrangerScroll">
+            <div class="ex-arranger-inner" id="expertArranger">
+              <div class="ex-ruler" id="expertRuler"></div>
+              <div class="ex-lanes" id="expertLanes"></div>
+              <div class="ex-playhead" id="expertPlayhead"><span></span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ex-editor">
+          <div class="ex-panel-head ex-editor-head">
+            <div class="ex-editor-title">
+              <span class="ex-track-dot" id="expertEditorDot"></span>
+              <h3 id="expertEditorName">主旋律</h3>
+              <span id="expertEditorSub">PIANO ROLL</span>
+            </div>
+            <div class="ex-editor-tools">
+              <button class="ex-tool is-on" id="expertToolDraw" type="button">画笔</button>
+              <button class="ex-tool" id="expertToolErase" type="button">擦除</button>
+              <button class="ex-tool ex-tool-accent" id="expertGenerate" type="button">重新生成</button>
+              <button class="ex-tool ex-tool-danger" id="expertClear" type="button">清空</button>
+            </div>
+          </div>
+          <div class="ex-piano-wrap" id="expertPiano"></div>
+          <div class="ex-drum-wrap" id="expertDrums" hidden></div>
+          <div class="ex-chord-wrap" id="expertChords" hidden></div>
+        </section>
+      </main>
+
+      <aside class="expert-inspector">
+        <div class="ex-panel-head">
+          <div>
+            <span class="ex-kicker">INSPECTOR</span>
+            <h3>轨道设置</h3>
+          </div>
+        </div>
+        <div id="expertInspector"></div>
+        <div class="ex-inspector-tip">
+          <span class="ex-tip-mark">?</span>
+          在编曲区点一个片段，再到下方画音符。所有修改会实时进入当前 8 小节循环。
+        </div>
+      </aside>
+    </div>
+
+    <footer class="expert-status">
+      <span id="expertStatusText">专家模式 · 所有修改实时生效</span>
+      <span>空格播放 · Ctrl/⌘ + Z 撤销 · Esc 返回</span>
+    </footer>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg class="icon"><use href="#i-check"></use></svg>
+    <span id="toastText">已保存</span>
+  </div>
+
+  <div class="modal-layer" id="helpModal" hidden>
+    <div class="modal-backdrop" data-close-help></div>
+    <section class="modal-card help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <button class="modal-close" id="helpClose" type="button" aria-label="关闭">
+        <svg class="icon"><use href="#i-close"></use></svg>
+      </button>
+      <div class="eyebrow eyebrow-dark"><span>使用说明</span> HOW IT GROWS</div>
+      <h2 id="helpTitle">三步，做一首自己的歌</h2>
+      <div class="help-steps">
+        <article>
+          <span class="step-num">01</span>
+          <div>
+            <h3>哼一段</h3>
+            <p>按 <kbd>R</kbd> 或点「哼一段旋律」，跟着四拍预备，哼 4 小节。音符会自动校准到调上。</p>
+          </div>
+        </article>
+        <article>
+          <span class="step-num">02</span>
+          <div>
+            <h3>换个味道</h3>
+            <p>点左边四种声音，速度、和弦、鼓点会整组换掉。用「换一组」换和弦，用「摇一摇」从头再来。</p>
+          </div>
+        </article>
+        <article>
+          <span class="step-num">03</span>
+          <div>
+            <h3>带走它</h3>
+            <p>按播放试听，满意后导出 WAV。歌会自动存在浏览器里，关掉页面也还在。</p>
+          </div>
+        </article>
+      </div>
+      <div class="help-footer">
+        <div class="shortcut-list">
+          <span><kbd>空格</kbd> 播放 / 暂停</span>
+          <span><kbd>R</kbd> 哼唱</span>
+          <span><kbd>Esc</kbd> 关闭窗口</span>
+        </div>
+        <button class="btn btn-dark" id="helpDone" type="button">开始试试</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-layer hum-layer" id="humModal" hidden>
+    <div class="modal-backdrop" data-close-hum></div>
+    <section class="hum-card" id="humCard" data-stage="ready" role="dialog" aria-modal="true" aria-labelledby="humTitle">
+      <button class="modal-close hum-close" id="humClose" type="button" aria-label="取消">
+        <svg class="icon"><use href="#i-close"></use></svg>
+      </button>
+
+      <div class="hum-stage hum-stage-ready">
+        <div class="hum-illustration" aria-hidden="true">
+          <span class="hum-ring ring-1"></span>
+          <span class="hum-ring ring-2"></span>
+          <span class="hum-ring ring-3"></span>
+          <span class="hum-mic"><svg class="icon"><use href="#i-mic"></use></svg></span>
+        </div>
+        <div class="eyebrow eyebrow-light"><span>把灵感唱出来</span> HUM IT</div>
+        <h2 id="humTitle">哼 4 小节，<br>剩下的交给我。</h2>
+        <p>不需要歌词，也不用唱得准。用「哒」或「嗯」随意哼一段，像说话一样自然。</p>
+        <div class="hum-tips">
+          <span><svg class="icon"><use href="#i-headphones"></use></svg> 戴耳机效果更好</span>
+          <span><svg class="icon"><use href="#i-note"></use></svg> 跑调会自动校准</span>
+        </div>
+        <button class="hum-start" id="humStart" type="button">
+          <span class="record-dot"></span>
+          开始，先听四拍
+        </button>
+        <button class="text-btn" id="humFallback" type="button">麦克风不方便？用灵感骰子</button>
+      </div>
+
+      <div class="hum-stage hum-stage-live">
+        <div class="hum-live-top">
+          <span class="live-badge"><span class="record-dot"></span> <span id="humStateLabel">准备</span></span>
+          <span id="humBarLabel">4 小节</span>
+        </div>
+        <div class="hum-orbit" id="humOrbit">
+          <span class="orbit-ring orbit-1"></span>
+          <span class="orbit-ring orbit-2"></span>
+          <span class="orbit-ring orbit-3"></span>
+          <div class="hum-center">
+            <strong id="humNote">—</strong>
+            <small id="humNoteHint">等待声音</small>
+          </div>
+        </div>
+        <div class="hum-progress"><span id="humProgressBar"></span></div>
+        <div class="hum-bars" id="humBars">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <p class="hum-live-hint" id="humLiveHint">听到「嘀」声后开始哼</p>
+        <button class="hum-stop" id="humStop" type="button">就哼到这里</button>
+      </div>
+
+      <div class="hum-stage hum-stage-processing">
+        <div class="process-spinner" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="eyebrow eyebrow-light"><span>正在生长</span> GROWING</div>
+        <h2>把声音<br>种进歌里…</h2>
+        <p id="processText">正在听清每一个音，校准节拍和音高。</p>
+      </div>
+
+      <div class="hum-stage hum-stage-error">
+        <div class="hum-error-icon" aria-hidden="true">!</div>
+        <div class="eyebrow eyebrow-light"><span>再来一次</span> TRY AGAIN</div>
+        <h2 id="humErrorTitle">没有听清旋律</h2>
+        <p id="humErrorText">麦克风好像没有收到声音。检查一下权限，或者让灵感骰子帮你起个头。</p>
+        <button class="hum-start" id="humRetry" type="button">再试一次</button>
+        <button class="text-btn" id="humFallback2" type="button">用灵感骰子生成一段</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="export-layer" id="exportLayer" hidden>
+    <div class="export-card">
+      <div class="export-spinner" aria-hidden="true"></div>
+      <strong id="exportText">正在准备实时录制…</strong>
+      <span>录制时长与歌曲相同，约 20–30 秒 · 请保持页面在前台</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="expert.js"></script>
+</body>
+</html>
